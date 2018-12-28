@@ -157,11 +157,47 @@
     FROM mmall_user
     WHERE username = #{username}
   </select>
+
+  <select id="checkEmail" parameterType="string" resultType="int" >
+    SELECT count(1)
+    FROM mmall_user
+    WHERE email = #{email}
+  </select>
   
   <select id="selectLogin" parameterType="map" resultMap="BaseResultMap" >
     SELECT
     <include refid="Base_Column_List" />
     FROM mmall_user
     WHERE username = #{username} AND password = #{password}
+  </select>
+
+  <select id="selectQuestionByUsername" parameterType="string" resultType="string" >
+    SELECT question
+    FROM mmall_user
+    WHERE username = #{username}
+  </select>
+
+  <select id="checkAnswer" parameterType="map" resultType="int" >
+    SELECT count(1)
+    FROM mmall_user
+    WHERE username = #{username} AND question = #{question} AND answer = #{answer}
+  </select>
+  
+  <update id="updatePasswordByUsername" parameterType="map" >
+    update mmall_user
+    set password = #{password},update_time = now()
+    where username = #{username}
+  </update>
+  
+  <select id="checkPassword" parameterType="map" resultType="int" >
+    SELECT count(1)
+    FROM mmall_user
+    WHERE id = #{userId} AND password = #{password}
+  </select>
+
+  <select id="checkEmailByUserId" parameterType="map" resultType="int" >
+    SELECT count(1)
+    FROM mmall_user
+    WHERE email = #{email} AND id != #{userId}
   </select>
 </mapper>
