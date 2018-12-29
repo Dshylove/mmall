@@ -44,7 +44,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "logout.do",method = RequestMethod.GET)
+    @RequestMapping(value = "logout.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session){
         session.removeAttribute(Const.CURRENT_USER);
@@ -68,7 +68,7 @@ public class UserController {
      * @param type 根据该参数传入类型判断校验用户名或者Email
      * @return
      */
-    @RequestMapping(value = "check_valid.do",method = RequestMethod.GET)
+    @RequestMapping(value = "check_valid.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> checkValid(@RequestParam("str")String str, @RequestParam("type")String type){
         return iUserService.checkValid(str, type);
@@ -79,12 +79,12 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "get_user_info.do",method = RequestMethod.GET)
+    @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user != null){
-            return ServerResponse.createBySuccess(user);
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser != null){
+            return ServerResponse.createBySuccess(currentUser);
         }
         return ServerResponse.createByErrorMessage("用户未登录，无法获取当前用户信息");
     }
@@ -94,7 +94,7 @@ public class UserController {
      * @param username
      * @return
      */
-    @RequestMapping(value = "forget_get_question.do",method = RequestMethod.GET)
+    @RequestMapping(value = "forget_get_question.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetGetQuestion(@RequestParam("username")String username){
         return iUserService.forgetGetQuestion(username);
@@ -175,12 +175,12 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "get_information.do",method = RequestMethod.GET)
+    @RequestMapping(value = "get_information.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> getInformation(HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录，需要强制登录，status=10");
         }
         return iUserService.getInformation(currentUser.getId());
     }
