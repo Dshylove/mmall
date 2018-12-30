@@ -3,8 +3,9 @@ package com.mmall.controller.backend;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
+import com.mmall.pojo.Product;
 import com.mmall.pojo.User;
-import com.mmall.service.ICategoryService;
+import com.mmall.service.IProductService;
 import com.mmall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,22 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by dgx on 2018/12/29.
+ * Created by dgx on 2018/12/30.
  */
 @Controller
-@RequestMapping("/manage/category")
-public class CategoryManageController {
+@RequestMapping("/manage/product")
+public class ProductManageController {
 
     @Autowired
     private IUserService iUserService;
-
     @Autowired
-    private ICategoryService iCategoryService;
+    private IProductService iProductService;
 
-    @RequestMapping(value = "add_category.do",method = RequestMethod.POST)
+    @RequestMapping(value = "save.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addCategory(HttpSession session, @RequestParam("categoryName")String categoryName,
-                                      @RequestParam(value = "parentId",defaultValue = "0")Integer parentId){
+    public ServerResponse saveProduct(Product product, HttpSession session){
         // 检查是否登录 todo: 使用拦截器统一判断
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null){
@@ -41,14 +40,15 @@ public class CategoryManageController {
         if (!iUserService.checkAdminRole(currentUser).isSuccess()){
             return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
         }
-        // 处理分类的逻辑
-        return iCategoryService.addCategory(categoryName, parentId);
+
+        // 处理业务逻辑
+        return iProductService.saveOrUpdateProduct(product);
     }
 
-    @RequestMapping(value = "set_category_name.do",method = RequestMethod.POST)
+    @RequestMapping(value = "set_sale_status.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse setCategoryName(@RequestParam("categoryId")Integer categoryId,
-                                          @RequestParam("categoryName")String categoryName, HttpSession session){
+    public ServerResponse setSaleStatus(@RequestParam("productId")Integer productId,
+                                        @RequestParam("status")Integer status, HttpSession session){
         // 检查是否登录 todo: 使用拦截器统一判断
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null){
@@ -59,19 +59,13 @@ public class CategoryManageController {
             return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
         }
 
-        return iCategoryService.setCategoryName(categoryId, categoryName);
+        // 处理业务逻辑
+        return iProductService.setSaleStatus(productId, status);
     }
 
-    /**
-     * 获取平级品类，根据父类别id查询
-     * @param categoryId 父类别id
-     * @param session
-     * @return
-     */
-    @RequestMapping(value = "get_category.do",method = RequestMethod.POST)
+    @RequestMapping(value = "detail.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse getChildrenParallelCategory(@RequestParam(value = "categoryId",defaultValue = "0")Integer categoryId,
-                                                      HttpSession session){
+    public ServerResponse getDetail(@RequestParam("productId")Integer productId, HttpSession session){
         // 检查是否登录 todo: 使用拦截器统一判断
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null){
@@ -81,20 +75,15 @@ public class CategoryManageController {
         if (!iUserService.checkAdminRole(currentUser).isSuccess()){
             return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
         }
-        // 查询子节点的category信息，并且不递归，保持平级
-        return iCategoryService.getChildrenParallelCategory(categoryId);
+
+        // 处理业务逻辑
+        return iProductService.manageProductDetail(productId);
     }
 
-    /**
-     * 获取当前分类id及递归子节点categoryId
-     * @param categoryId
-     * @param session
-     * @return
-     */
-    @RequestMapping(value = "get_deep_category.do",method = RequestMethod.POST)
+    @RequestMapping(value = "list.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse getCategoryAndDeepChildrenCategory(@RequestParam(value = "categoryId",defaultValue = "0")Integer categoryId,
-                                                      HttpSession session){
+    public ServerResponse getList(@RequestParam(value = "pageNum",defaultValue = "1")int pageNum,
+                                  @RequestParam(value = "pageSize",defaultValue = "10")int pageSize, HttpSession session){
         // 检查是否登录 todo: 使用拦截器统一判断
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null){
@@ -104,8 +93,28 @@ public class CategoryManageController {
         if (!iUserService.checkAdminRole(currentUser).isSuccess()){
             return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
         }
-        // 查询当前节点的id和递归子节点的id
-        // 0->100->10000
-        return iCategoryService.getCategoryAndDeepChildrenCategory(categoryId);
+
+        // 处理业务逻辑
+        return iProductService.getProductList(pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "search.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse searchProduct(@RequestParam("productName")String productName,
+                                        @RequestParam("productId")Integer productId,
+                                        @RequestParam(value = "pageNum",defaultValue = "1")int pageNum,
+                                        @RequestParam(value = "pageSize",defaultValue = "10")int pageSize, HttpSession session){
+        // 检查是否登录 todo: 使用拦截器统一判断
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录，需要强制登录，status=10");
+        }
+        // 检查是否为管理员 todo: 使用拦截器统一判断
+        if (!iUserService.checkAdminRole(currentUser).isSuccess()){
+            return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
+        }
+
+        // 处理业务逻辑
+        return null;
     }
 }
