@@ -169,7 +169,7 @@ public class UserServiceImpl implements IUserService{
         updateUser.setQuestion(user.getQuestion());
         updateUser.setAnswer(user.getAnswer());
 
-        int updateCount = userMapper.updateByPrimaryKeySelective(updateUser); //TODO: 使用该dao方法update_time = now()有疑惑
+        int updateCount = userMapper.updateByPrimaryKeySelective(updateUser); //TODO: 使用该dao方法update_time = now()有疑惑；已解决，动态SQL语句设置条件为true
         if (updateCount > 0){
             return ServerResponse.createBySuccess("修改个人信息成功",updateUser);
         }
