@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements ICategoryService{
     }
 
     @Override
-    public ServerResponse getCategoryAndDeepChildrenCategory(Integer categoryId) {
+    public ServerResponse<List<Integer>> getCategoryAndDeepChildrenCategory(Integer categoryId) {
         if (categoryId == null){
             return ServerResponse.createByErrorMessage("参数错误");
         }

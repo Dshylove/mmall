@@ -17,6 +17,7 @@ public interface CategoryMapper {
 
     int updateByPrimaryKey(Category record);
 
+
     /**
      * 根据父类别id查询
      */

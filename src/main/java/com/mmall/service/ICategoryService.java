@@ -22,5 +22,5 @@ public interface ICategoryService {
     /**
      * 获取当前分类id及递归子节点categoryId
      */
-    ServerResponse getCategoryAndDeepChildrenCategory(Integer categoryId);
+    ServerResponse<List<Integer>> getCategoryAndDeepChildrenCategory(Integer categoryId);
 }
