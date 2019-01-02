@@ -144,6 +144,8 @@ public class ProductManageController {
 
         // 获取tomcat工程绝对路径 + upload目录
         String path = request.getSession().getServletContext().getRealPath("upload");
+        // path: D:\\Workspaces\\IdeaProjects\\mmall\\target\\mmall\\upload
+//        String path = "D:/upload";
         // 上传文件
         String targetFileName = iFileService.upload(file,path);
         // 拼接图片url地址
