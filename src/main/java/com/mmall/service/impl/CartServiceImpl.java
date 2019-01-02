@@ -73,15 +73,13 @@ public class CartServiceImpl implements ICartService{
                     cartProductVo.setProductTotalPrice(BigDecimalUtil.mul(product.getPrice().doubleValue(),cartProductVo.getQuantity()));
                     cartProductVo.setProductChecked(cartItem.getChecked());
 
+                    if (cartItem.getChecked() == Const.Cart.CHECKED){
+                        cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(),cartProductVo.getProductTotalPrice().doubleValue());
+                    } else {
+                        allChecked = false; //是否已经都勾选
+                    }
                     /*--------------------*/
                 }
-                /*--------------------*/
-                if (cartItem.getChecked() == Const.Cart.CHECKED){
-                    cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(),cartProductVo.getProductTotalPrice().doubleValue());
-                } else {
-                    allChecked = false; //是否已经都勾选
-                }
-                /*--------------------*/
 
                 cartProductVoList.add(cartProductVo);
             }
