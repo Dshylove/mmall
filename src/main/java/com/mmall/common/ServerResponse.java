@@ -6,6 +6,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import java.io.Serializable;
 
 /**
+ * 高复用响应对象
  * Created by dgx on 2018/12/27.
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
