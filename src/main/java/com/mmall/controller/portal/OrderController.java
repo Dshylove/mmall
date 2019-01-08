@@ -118,4 +118,40 @@ public class OrderController {
     }
 
 
+
+    @RequestMapping(value = "create.do")
+    @ResponseBody
+    public ServerResponse create(@RequestParam("shippingId")Integer shippingId, HttpSession session){
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+
+        return iOrderService.createOrder(currentUser.getId(),shippingId);
+    }
+
+    @RequestMapping(value = "cancel.do")
+    @ResponseBody
+    public ServerResponse cancel(@RequestParam("orderNo")Long orderNo, HttpSession session){
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+
+        return iOrderService.cancel(currentUser.getId(),orderNo);
+    }
+
+    /**
+     * 获取购物车中已选中的商品详情
+     */
+    @RequestMapping(value = "get_order_cart_product.do")
+    @ResponseBody
+    public ServerResponse getOrderCartProduct(HttpSession session){
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+
+        return iOrderService.getOrderCartProduct(currentUser.getId());
+    }
 }

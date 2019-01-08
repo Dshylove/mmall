@@ -37,7 +37,7 @@ public class ShippingController {
 
     @RequestMapping(value = "del.do")
     @ResponseBody
-    public ServerResponse del(Integer shippingId, HttpSession session){
+    public ServerResponse del(@RequestParam("shippingId")Integer shippingId, HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -57,7 +57,7 @@ public class ShippingController {
 
     @RequestMapping(value = "select.do")
     @ResponseBody
-    public ServerResponse select(Integer shippingId, HttpSession session){
+    public ServerResponse select(@RequestParam("shippingId")Integer shippingId, HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());

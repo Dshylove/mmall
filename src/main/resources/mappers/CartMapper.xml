@@ -163,4 +163,13 @@
     FROM mmall_cart
     WHERE user_id = #{userId}
   </select>
+
+  
+  <select id="selectCheckedByUserId" parameterType="int" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM mmall_cart
+    WHERE user_id = #{userId}
+    and checked = 1
+  </select>
 </mapper>
