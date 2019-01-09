@@ -110,6 +110,10 @@ public class CartServiceImpl implements ICartService{
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if (product == null){
+            return ServerResponse.createByErrorMessage("不存在该商品，商品id:" + productId);
+        }
         Cart cart = cartMapper.selectByUserIdProductId(userId, productId);
         if (cart == null){
             // 该产品不在购物车里，需要新增记录

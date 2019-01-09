@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
+ * 订单Vo（已下单）
  * Created by dgx on 2019/1/9.
  */
 public class OrderVo {
@@ -43,6 +44,8 @@ public class OrderVo {
 
     // 收货地址Vo
     private ShippingVo shippingVo;
+
+
 
     public Long getOrderNo() {
         return orderNo;

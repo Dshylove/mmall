@@ -3,6 +3,7 @@ package com.mmall.vo;
 import java.math.BigDecimal;
 
 /**
+ * 订单子表详情表Vo
  * Created by dgx on 2019/1/9.
  */
 public class OrderItemVo {

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
+ * 购物车中已选中的商品详情Vo（未下单）
  * Created by dgx on 2019/1/9.
  */
 public class OrderProductVo {

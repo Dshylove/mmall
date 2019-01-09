@@ -154,4 +154,27 @@ public class OrderController {
 
         return iOrderService.getOrderCartProduct(currentUser.getId());
     }
+
+    @RequestMapping(value = "detail.do")
+    @ResponseBody
+    public ServerResponse detail(@RequestParam("orderNo")Long orderNo, HttpSession session){
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+
+        return iOrderService.detail(currentUser.getId(),orderNo);
+    }
+
+    @RequestMapping(value = "list.do")
+    @ResponseBody
+    public ServerResponse list(@RequestParam(value = "pageNum",defaultValue = "1")int pageNum,
+                               @RequestParam(value = "pageSize",defaultValue = "10")int pageSize, HttpSession session){
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+
+        return iOrderService.list(currentUser.getId(),pageNum,pageSize);
+    }
 }

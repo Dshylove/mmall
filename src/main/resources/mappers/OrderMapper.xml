@@ -213,4 +213,14 @@
     FROM mmall_order
     WHERE order_no = #{orderNo}
   </select>
+  
+  <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM mmall_order
+    <if test="userId != null" >
+      WHERE user_id = #{userId}
+    </if>
+    order by create_time desc
+  </select>
 </mapper>
